@@ -1,0 +1,19 @@
+.meal {
+    padding: 12px;
+}
+
+.meal-namex {
+    font-weight: 500;
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.meal-price {
+    font-weight: 200
+    color: @accent_color;
+}
+
+.group {
+  margin: 0px;
+  padding: 0px;
+}

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Mensa
+Exec=digital.fischers.mensash
+Icon=digital.fischers.mensash
+Terminal=false
+Type=Application
+Categories=Utility;
+Keywords=GTK;
+StartupNotify=true
+DBusActivatable=true

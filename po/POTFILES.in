@@ -1,0 +1,8 @@
+# List of source files containing translatable strings.
+# Please keep this file sorted alphabetically.
+data/digital.fischers.mensash.desktop.in
+data/digital.fischers.mensash.metainfo.xml.in
+data/digital.fischers.mensash.gschema.xml
+src/main.js
+src/window.js
+src/window.ui
