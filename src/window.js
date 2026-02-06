@@ -155,8 +155,6 @@ export const MensaShWindow = GObject.registerClass({
 
   createPageForMeals(mealsList) {
     const page = new Adw.PreferencesPage();
-    const dateHeaderGroup = new Adw.PreferencesGroup()
-    page.add(dateHeaderGroup);
 
     if (mealsList.length === 0) {
       const statusPage = new Adw.StatusPage({
@@ -198,7 +196,11 @@ export const MensaShWindow = GObject.registerClass({
             css_classes: ["meal-name"],
           });
 
-          const priceVal = meal.price.students ? meal.price.students.toFixed(2) + " €" : "-,-- €";
+          const students = meal.price.students ? meal.price.students.toFixed(2) + " €" : "-,-- €";
+          const employees = meal.price.employees ? meal.price.employees.toFixed(2) + " €" : "-,-- €";
+          const guests = meal.price.guests ? meal.price.guests.toFixed(2) + " €" : "-,-- €";
+
+          const priceVal = `${students} / ${employees} / ${guests}`
           const price = new Gtk.Label({
             wrap: true, xalign: 0, halign: Gtk.Align.START,
             label: priceVal,
