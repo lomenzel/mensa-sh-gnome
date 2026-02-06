@@ -17,3 +17,20 @@
   margin: 0px;
   padding: 0px;
 }
+
+.compact-switcher button {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    min-width: 0; /* Standard-Mindestbreite aufheben */
+    font-weight: bold;
+}
+
+/* Optional: Damit es mehr wie eine "Pill"-Navigation aussieht */
+.compact-switcher {
+    margin-top: 0;
+    margin-bottom: 0;
+}

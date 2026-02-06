@@ -37,7 +37,7 @@ Gio._promisify(
 export const MensaShWindow = GObject.registerClass({
   GTypeName: 'MensaShWindow',
   Template: 'resource:///digital/fischers/mensash/window.ui',
-  InternalChildren: ['meals', 'refresh_btn', 'meals_revealer', 'refresh_stack', 'refresh_spinner'],
+  InternalChildren: ['meals_stack', 'refresh_btn', 'refresh_stack', 'refresh_spinner'],
 }, class MensaShWindow extends Adw.ApplicationWindow {
   http_session = new Soup.Session();
   config = new Config(() => this.fetchMeals());
@@ -52,20 +52,32 @@ export const MensaShWindow = GObject.registerClass({
     const preferencesAction = new Gio.SimpleAction({ name: 'preferences' });
     preferencesAction.connect('activate', () => {
       const prefs = new MensaPreferences(this.config);
-      prefs.present(this);
+      prefs.present();
     });
 
     application.add_action(preferencesAction);
 
     this.load_styling();
-
-    this.init()
+    this.init();
   }
 
   async init() {
-    this._meals_revealer.set_reveal_child(false);
     await this.fetchMeals().catch(console.error);
-    this._meals_revealer.set_reveal_child(true);
+  }
+
+  getNextBusinessDays(number) {
+    const days = [];
+    let current = GLib.DateTime.new_now_local();
+
+    while (days.length < number) {
+      const dayOfWeek = current.get_day_of_week();
+
+      if (dayOfWeek !== 6 && dayOfWeek !== 7) {
+        days.push(current);
+      }
+      current = current.add_days(1);
+    }
+    return days;
   }
 
   async fetchMeals() {
@@ -73,16 +85,24 @@ export const MensaShWindow = GObject.registerClass({
     this._refresh_stack.set_visible_child(this._refresh_spinner);
     this._refresh_spinner.start();
 
-    const date = GLib.DateTime.new_now_local();
     const locationString = this.config.getSelectedLocationsString();
 
     if (!locationString) {
       console.log("No location selected");
+      this._refresh_spinner.stop();
+      this._refresh_stack.set_visible_child(this._refresh_btn);
       this._refresh_btn.set_sensitive(true);
       return;
     }
 
-    const url = `https://speiseplan.mcloud.digital/v2/meals?location=${locationString}&date=${date.format("%Y-%m-%d")}`;
+    const days = this.getNextBusinessDays(5);
+    let urlParams = `location=${locationString}&date=`;
+
+    for (const day of days) {
+      urlParams += `${day.format("%Y-%m-%d")},`;
+    }
+
+    const url = `https://speiseplan.mcloud.digital/v2/meals?${urlParams}`;
     const message = Soup.Message.new("GET", url);
 
     try {
@@ -99,24 +119,62 @@ export const MensaShWindow = GObject.registerClass({
 
       const text_decoder = new TextDecoder("utf-8");
       const json = JSON.parse(text_decoder.decode(bytes.toArray()));
+      const allMeals = json.data;
 
-      const mealsByLocation = {};
-      for (const meal of json.data) {
-        const locName = meal.location.name;
-        if (!mealsByLocation[locName]) mealsByLocation[locName] = [];
-        mealsByLocation[locName].push(meal);
-      }
-
-      let child = this._meals.get_first_child();
+      let child = this._meals_stack.get_first_child();
       while (child) {
-        this._meals.remove(child);
-        child = this._meals.get_first_child();
+        const next = child.get_next_sibling();
+        this._meals_stack.remove(child);
+        child = next;
       }
 
-      const scrollablePage = new Adw.PreferencesPage();
-      this._meals.append(scrollablePage);
+      for (const dayDate of days) {
+        const isoDate = dayDate.format("%Y-%m-%d");
 
-      for (const [locationName, meals] of Object.entries(mealsByLocation)) {
+        const tabTitle = dayDate.format("%a");
+
+        const daysMeals = allMeals.filter(m => m.date === isoDate);
+
+        const page = this.createPageForMeals(daysMeals);
+
+        this._meals_stack.add_titled(
+            page,
+            `day_${isoDate}`,
+            tabTitle
+        );
+      }
+
+    } catch (e) {
+      console.error("Error loading meals", e);
+    } finally {
+      this._refresh_spinner.stop();
+      this._refresh_stack.set_visible_child(this._refresh_btn);
+      this._refresh_btn.set_sensitive(true);
+    }
+  }
+
+  createPageForMeals(mealsList) {
+    const page = new Adw.PreferencesPage();
+    const dateHeaderGroup = new Adw.PreferencesGroup()
+    page.add(dateHeaderGroup);
+
+    if (mealsList.length === 0) {
+      const statusPage = new Adw.StatusPage({
+        icon_name: 'face-uncertain-symbolic',
+        title: 'No meals today',
+        description: 'Guess you have to starve now.'
+      });
+      return statusPage;
+    }
+
+    const mealsByLocation = {};
+    for (const meal of mealsList) {
+      const locName = meal.location.name;
+      if (!mealsByLocation[locName]) mealsByLocation[locName] = [];
+      mealsByLocation[locName].push(meal);
+    }
+
+    for (const [locationName, meals] of Object.entries(mealsByLocation)) {
         const group = new Adw.PreferencesGroup({
           title: locationName,
           description: meals[0].location.city,
@@ -129,14 +187,21 @@ export const MensaShWindow = GObject.registerClass({
 
         for (const meal of meals) {
           const box = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL });
+
+          let icon = "🥩";
+          if (meal.vegan) icon = "🌻";
+          else if (meal.vegetarian) icon = "🌽";
+
           const name = new Gtk.Label({
             wrap: true, xalign: 0, halign: Gtk.Align.START,
-            label: (meal.vegan ? "🌻" : meal.vegetarian ? "🌽" : "🥩") + " " + meal.name,
+            label: `${icon} ${meal.name}`,
             css_classes: ["meal-name"],
           });
+
+          const priceVal = meal.price.students ? meal.price.students.toFixed(2) + " €" : "-,-- €";
           const price = new Gtk.Label({
             wrap: true, xalign: 0, halign: Gtk.Align.START,
-            label: (meal.price.students).toFixed(2) + " €",
+            label: priceVal,
             css_classes: ["meal-price", "body", "dim-label"],
           });
           box.append(name);
@@ -144,21 +209,13 @@ export const MensaShWindow = GObject.registerClass({
           mealGroup.append(box);
         }
         group.add(mealGroup);
-        scrollablePage.add(group);
-      }
-
-    } catch (e) {
-      console.error("Error loading meals", e);
-    } finally {
-      this._refresh_spinner.stop();
-      this._refresh_stack.set_visible_child(this._refresh_btn);
-      this._refresh_btn.set_sensitive(true);
+        page.add(group);
     }
+    return page;
   }
 
   load_styling() {
     const provider = new Gtk.CssProvider();
-    // prefix like in gresource.xml
     provider.load_from_resource('/digital/fischers/mensash/js/style.css');
 
     Gtk.StyleContext.add_provider_for_display(
