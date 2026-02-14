@@ -36,8 +36,8 @@
       "buildsystem": "meson",
       "sources": [
         {
-          "type": "git",
-          "url": "https://github.com/Importantus/mensa-sh-gnome.git"
+          "type": "dir",
+          "path": "."
         }
       ]
     }
