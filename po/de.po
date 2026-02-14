@@ -8,8 +8,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-14T12:00+0000\n"
 "PO-Revision-Date: 2026-02-14T12:00+0000\n"
-"Last-Translator: \n"
-"Language-Team: German <de@li.org>\n"
+"Last-Translator: Sören\n"
+"Language-Team: German\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -25,7 +25,7 @@ msgstr "Standorte"
 
 #: src/preferences.js:30 src/preferences.js:32
 msgid "Display"
-msgstr "Anzeige"
+msgstr "Darstellung"
 
 #: src/preferences.js:38 src/preferences.js:40
 msgid "Allergens"
@@ -33,15 +33,15 @@ msgstr "Allergene"
 
 #: src/preferences.js:86
 msgid "Dietary Preferences"
-msgstr "Ernährungspräferenzen"
+msgstr "Essgewohnheiten"
 
 #: src/preferences.js:87
 msgid "Filter meals by dietary preference"
-msgstr "Gerichte nach Ernährungspräferenzen filtern"
+msgstr "Gerichte nach Vorlieben filtern"
 
 #: src/preferences.js:91 src/preferences.js:115 src/preferences.js:118
 msgid "All meals"
-msgstr "Alle Gerichte"
+msgstr "Alles anzeigen"
 
 #: src/preferences.js:92 src/preferences.js:116
 msgid "Vegetarian only"
@@ -57,11 +57,11 @@ msgstr "Sprache"
 
 #: src/preferences.js:154
 msgid "App language"
-msgstr "App-Sprache"
+msgstr "Sprache der App"
 
 #: src/preferences.js:158 src/preferences.js:160
 msgid "Follow system"
-msgstr "System folgen"
+msgstr "Systemstandard"
 
 #: src/preferences.js:159
 msgid "English"
@@ -81,7 +81,7 @@ msgstr "Preise anzeigen für"
 
 #: src/preferences.js:201 src/preferences.js:204
 msgid "Students"
-msgstr "Studierende"
+msgstr "Studis"
 
 #: src/preferences.js:202 src/preferences.js:205
 msgid "Employees"
@@ -89,7 +89,7 @@ msgstr "Mitarbeitende"
 
 #: src/preferences.js:203 src/preferences.js:206
 msgid "Guests"
-msgstr "Externe"
+msgstr "Gäste"
 
 #: src/preferences.js:235
 msgid "Allergen Warnings"
@@ -97,7 +97,7 @@ msgstr "Allergen-Warnungen"
 
 #: src/preferences.js:236
 msgid "Select allergens to highlight"
-msgstr "Allergene auswählen für Hervorhebung"
+msgstr "Wähle Allergene aus, vor denen gewarnt werden soll"
 
 #: src/window.js:6
 msgid "Mensa"
@@ -105,7 +105,7 @@ msgstr "Mensa"
 
 #: src/window.js:29
 msgid "Refresh"
-msgstr "Aktualisierten"
+msgstr "Aktualisieren"
 
 #: src/window.js:43
 msgid "Main Menu"
@@ -121,24 +121,24 @@ msgstr "_Über Mensa"
 
 #: src/window.js:92 src/window.js:176
 msgid "No meals today"
-msgstr "Heute keine Gerichte"
+msgstr "Heute bleibt die Küche kalt"
 
 #: src/window.js:93
 msgid "No meals match your dietary preference"
-msgstr "Keine Gerichte entsprechen Ihrer Ernährungspräferenz"
+msgstr "Nichts für deinen Geschmack dabei"
 
 #: src/window.js:94
 msgid "Guess you have to starve now."
-msgstr "Müssen wohl hungern."
+msgstr "Heute ist wohl Fastentag 🤷"
 
 #: src/window.js:95
 msgid "Try adjusting your dietary preferences in settings."
-msgstr "Versuchen Sie Ihre Ernährungspräferenzen in den Einstellungen anzupassen."
+msgstr "Vielleicht bist du heute mal weniger wählerisch?"
 
 #: src/window.js:93
 msgid "No location selected"
-msgstr "Kein Standort ausgewählt"
+msgstr "Keine Mensa ausgewählt"
 
 #: src/preferences.js:153
 msgid "Restart app to apply language changes"
-msgstr "App neu starten, um die Sprachänderungen zu übernehmen"
+msgstr "Neustart erforderlich, um Sprache zu ändern"
