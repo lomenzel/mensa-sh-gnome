@@ -6,7 +6,12 @@ export class Config {
 
         this.configDir = GLib.get_user_config_dir() + "/mensa-app";
         this.configPath = this.configDir + "/config.json";
-        this.data = { locations: ["HL_ME", "HL_CA"] };
+        this.data = {
+            locations: ["HL_ME", "HL_CA"],
+            dietaryPreference: "all",
+            priceCategory: "students",
+            enabledAllergens: []
+        };
         this.load();
     }
 
@@ -52,5 +57,44 @@ export class Config {
 
     getSelectedLocationsString() {
         return this.data.locations.join(',');
+    }
+
+    getDietaryPreference() {
+        return this.data.dietaryPreference || "all";
+    }
+
+    setDietaryPreference(preference) {
+        this.data.dietaryPreference = preference;
+        this.save();
+    }
+
+    getPriceCategory() {
+        return this.data.priceCategory || "students";
+    }
+
+    setPriceCategory(category) {
+        this.data.priceCategory = category;
+        this.save();
+    }
+
+    getEnabledAllergens() {
+        return this.data.enabledAllergens || [];
+    }
+
+    isAllergenEnabled(code) {
+        return (this.data.enabledAllergens || []).includes(code);
+    }
+
+    toggleAllergen(code, enabled) {
+        if (!this.data.enabledAllergens) {
+            this.data.enabledAllergens = [];
+        }
+        const index = this.data.enabledAllergens.indexOf(code);
+        if (enabled && index === -1) {
+            this.data.enabledAllergens.push(code);
+        } else if (!enabled && index !== -1) {
+            this.data.enabledAllergens.splice(index, 1);
+        }
+        this.save();
     }
 }

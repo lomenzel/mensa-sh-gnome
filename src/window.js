@@ -102,6 +102,13 @@ export const MensaShWindow = GObject.registerClass({
       urlParams += `${day.format("%Y-%m-%d")},`;
     }
 
+    const langs = GLib.get_language_names();
+    const primaryLang = langs.length > 0 ? langs[0] : 'C';
+
+    if (!primaryLang.startsWith('de')) {
+        urlParams += "&language=en";
+    }
+
     const url = `https://speiseplan.mcloud.digital/v2/meals?${urlParams}`;
     const message = Soup.Message.new("GET", url);
 
@@ -165,8 +172,25 @@ export const MensaShWindow = GObject.registerClass({
       return statusPage;
     }
 
+    const dietaryPreference = this.config.getDietaryPreference();
+    let filteredMeals = mealsList;
+    if (dietaryPreference === "vegetarian") {
+      filteredMeals = mealsList.filter(m => m.vegetarian);
+    } else if (dietaryPreference === "vegan") {
+      filteredMeals = mealsList.filter(m => m.vegan);
+    }
+
+    if (filteredMeals.length === 0) {
+      const statusPage = new Adw.StatusPage({
+        icon_name: 'face-uncertain-symbolic',
+        title: 'No meals match your dietary preference',
+        description: 'Try adjusting your dietary preferences in settings.'
+      });
+      return statusPage;
+    }
+
     const mealsByLocation = {};
-    for (const meal of mealsList) {
+    for (const meal of filteredMeals) {
       const locName = meal.location.name;
       if (!mealsByLocation[locName]) mealsByLocation[locName] = [];
       mealsByLocation[locName].push(meal);
@@ -196,18 +220,52 @@ export const MensaShWindow = GObject.registerClass({
             css_classes: ["meal-name"],
           });
 
-          const students = meal.price.students ? meal.price.students.toFixed(2) + " €" : "-,-- €";
-          const employees = meal.price.employees ? meal.price.employees.toFixed(2) + " €" : "-,-- €";
-          const guests = meal.price.guests ? meal.price.guests.toFixed(2) + " €" : "-,-- €";
-
-          const priceVal = `${students} / ${employees} / ${guests}`
+          const priceCategory = this.config.getPriceCategory();
+          const priceValue = meal.price[priceCategory];
+          const priceLabel = priceValue ? priceValue.toFixed(2) + " €" : "-,-- €";
           const price = new Gtk.Label({
-            wrap: true, xalign: 0, halign: Gtk.Align.START,
-            label: priceVal,
+            wrap: true, xalign: 0,
+            halign: Gtk.Align.START,
+            valign: Gtk.Align.CENTER,
+            label: priceLabel,
             css_classes: ["meal-price", "body", "dim-label"],
           });
+
+          const priceBox = new Gtk.Box({
+            orientation: Gtk.Orientation.HORIZONTAL,
+            spacing: 12,
+            margin_top: 4
+          })
+
+          priceBox.append(price)
+
           box.append(name);
-          box.append(price);
+          box.append(priceBox);
+
+          // Allergen badges
+          if (meal.allergens && meal.allergens.length > 0) {
+            const enabledAllergens = this.config.getEnabledAllergens();
+            const matchingAllergens = meal.allergens.filter(a => enabledAllergens.includes(a.code));
+
+            if (matchingAllergens.length > 0) {
+              const allergensBox = new Gtk.Box({
+                orientation: Gtk.Orientation.HORIZONTAL,
+                spacing: 6,
+                valign: Gtk.Align.CENTER
+              });
+
+              for (const allergen of matchingAllergens) {
+                const badge = new Gtk.Label({
+                  label: allergen.name,
+                  css_classes: ["allergen-badge"]
+                });
+                allergensBox.append(badge);
+              }
+
+              priceBox.append(allergensBox);
+            }
+          }
+
           mealGroup.append(box);
         }
         group.add(mealGroup);
