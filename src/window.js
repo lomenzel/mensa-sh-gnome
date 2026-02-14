@@ -27,6 +27,7 @@ import Soup from "gi://Soup";
 import Gdk from 'gi://Gdk';
 import { Config } from './config.js';
 import { MensaPreferences } from './preferences.js';
+import { API } from './api.js';
 
 Gio._promisify(
   Soup.Session.prototype,
@@ -39,7 +40,7 @@ export const MensaShWindow = GObject.registerClass({
   Template: 'resource:///digital/fischers/mensash/window.ui',
   InternalChildren: ['meals_stack', 'refresh_btn', 'refresh_stack', 'refresh_spinner'],
 }, class MensaShWindow extends Adw.ApplicationWindow {
-  http_session = new Soup.Session();
+  api = new API();
   config = new Config(() => this.fetchMeals());
 
   constructor(application) {
@@ -85,9 +86,9 @@ export const MensaShWindow = GObject.registerClass({
     this._refresh_stack.set_visible_child(this._refresh_spinner);
     this._refresh_spinner.start();
 
-    const locationString = this.config.getSelectedLocationsString();
+    const locationCodes = this.config.data.locations;
 
-    if (!locationString) {
+    if (!locationCodes || locationCodes.length === 0) {
       console.log("No location selected");
       this._refresh_spinner.stop();
       this._refresh_stack.set_visible_child(this._refresh_btn);
@@ -96,36 +97,10 @@ export const MensaShWindow = GObject.registerClass({
     }
 
     const days = this.getNextBusinessDays(5);
-    let urlParams = `location=${locationString}&date=`;
-
-    for (const day of days) {
-      urlParams += `${day.format("%Y-%m-%d")},`;
-    }
-
-    const langs = GLib.get_language_names();
-    const primaryLang = langs.length > 0 ? langs[0] : 'C';
-
-    if (!primaryLang.startsWith('de')) {
-        urlParams += "&language=en";
-    }
-
-    const url = `https://speiseplan.mcloud.digital/v2/meals?${urlParams}`;
-    const message = Soup.Message.new("GET", url);
+    const langPreference = this.config.getLanguagePreference();
 
     try {
-      const bytes = await this.http_session.send_and_read_async(
-        message,
-        GLib.PRIORITY_DEFAULT,
-        null,
-      );
-
-      if (message.get_status() !== Soup.Status.OK) {
-        console.error(`HTTP Status ${message.get_status()}`);
-        return;
-      }
-
-      const text_decoder = new TextDecoder("utf-8");
-      const json = JSON.parse(text_decoder.decode(bytes.toArray()));
+      const json = await this.api.fetchMeals(locationCodes, days, langPreference);
       const allMeals = json.data;
 
       let child = this._meals_stack.get_first_child();

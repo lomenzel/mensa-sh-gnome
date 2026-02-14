@@ -10,7 +10,8 @@ export class Config {
             locations: ["HL_ME", "HL_CA"],
             dietaryPreference: "all",
             priceCategory: "students",
-            enabledAllergens: []
+            enabledAllergens: [],
+            languagePreference: "system"
         };
         this.load();
     }
@@ -31,7 +32,6 @@ export class Config {
 
     save() {
         try {
-            // Ordner erstellen, falls nicht existent
             GLib.mkdir_with_parents(this.configDir, 0o755);
             const content = JSON.stringify(this.data, null, 2);
             GLib.file_set_contents(this.configPath, content);
@@ -57,6 +57,15 @@ export class Config {
 
     getSelectedLocationsString() {
         return this.data.locations.join(',');
+    }
+
+    getLanguagePreference() {
+        return this.data.languagePreference || "system";
+    }
+
+    setLanguagePreference(preference) {
+        this.data.languagePreference = preference;
+        this.save();
     }
 
     getDietaryPreference() {

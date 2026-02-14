@@ -1,8 +1,8 @@
 import GObject from 'gi://GObject';
 import Gtk from 'gi://Gtk';
 import Adw from 'gi://Adw';
-import Soup from 'gi://Soup';
 import GLib from 'gi://GLib';
+import { API } from './api.js';
 
 export const MensaPreferences = GObject.registerClass(
   class MensaPreferences extends Adw.PreferencesWindow {
@@ -15,7 +15,7 @@ export const MensaPreferences = GObject.registerClass(
       });
 
       this.config = config;
-      this.http_session = new Soup.Session();
+      this.api = new API();
 
       // Display Page
       const displayPage = new Adw.PreferencesPage({
@@ -46,14 +46,8 @@ export const MensaPreferences = GObject.registerClass(
     }
 
     async fetchLocations() {
-      const message = Soup.Message.new("GET", "https://speiseplan.mcloud.digital/v2/locations" + urlParams);
-
       try {
-        const bytes = await this.http_session.send_and_read_async(message, GLib.PRIORITY_DEFAULT, null);
-        if (message.get_status() !== Soup.Status.OK) return;
-
-        const decoder = new TextDecoder('utf-8');
-        const json = JSON.parse(decoder.decode(bytes.toArray()));
+        const json = await this.api.fetchLocations();
 
         const cities = {};
         for (const loc of json.data) {
@@ -173,23 +167,9 @@ export const MensaPreferences = GObject.registerClass(
     }
 
     async fetchAllergens() {
-      let urlParams = "";
-
-      const langs = GLib.get_language_names();
-      const primaryLang = langs.length > 0 ? langs[0] : 'C';
-
-      if (!primaryLang.startsWith('de')) {
-        urlParams += "&language=en";
-      }
-
-      const message = Soup.Message.new("GET", "https://speiseplan.mcloud.digital/v2/allergens?location=HL_ME" + urlParams);
-
       try {
-        const bytes = await this.http_session.send_and_read_async(message, GLib.PRIORITY_DEFAULT, null);
-        if (message.get_status() !== Soup.Status.OK) return;
-
-        const decoder = new TextDecoder('utf-8');
-        const json = JSON.parse(decoder.decode(bytes.toArray()));
+        const langPreference = this.config.getLanguagePreference();
+        const json = await this.api.fetchAllergens("HL_ME", langPreference);
 
         const group = new Adw.PreferencesGroup({
           title: "Allergen Warnings",
