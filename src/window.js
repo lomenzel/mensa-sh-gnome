@@ -97,10 +97,21 @@ export const MensaShWindow = GObject.registerClass({
     }
 
     const days = this.getNextBusinessDays(5);
-    const langPreference = this.config.getLanguagePreference();
+    const langPref = this.config.getLanguagePreference();
+
+    const systemLangs = GLib.get_language_names();
+    const systemIsGerman = systemLangs.length > 0 && systemLangs[0].startsWith('de');
+
+    let useEnglish = false;
+    if (langPref === 'en') useEnglish = true;
+    else if (langPref === 'de') useEnglish = false;
+    else useEnglish = !systemIsGerman;
+
+    const targetLocale = useEnglish ? 'en-US' : 'de-DE';
+    const dateFormatter = new Intl.DateTimeFormat(targetLocale, { weekday: 'short' });
 
     try {
-      const json = await this.api.fetchMeals(locationCodes, days, langPreference);
+      const json = await this.api.fetchMeals(locationCodes, days, langPref);
       const allMeals = json.data;
 
       let child = this._meals_stack.get_first_child();
@@ -113,7 +124,13 @@ export const MensaShWindow = GObject.registerClass({
       for (const dayDate of days) {
         const isoDate = dayDate.format("%Y-%m-%d");
 
-        const tabTitle = dayDate.format("%a");
+        const jsDate = new Date(
+            dayDate.get_year(),
+            dayDate.get_month() - 1,
+            dayDate.get_day_of_month()
+        );
+
+        const tabTitle = dateFormatter.format(jsDate);
 
         const daysMeals = allMeals.filter(m => m.date === isoDate);
 
@@ -141,8 +158,8 @@ export const MensaShWindow = GObject.registerClass({
     if (mealsList.length === 0) {
       const statusPage = new Adw.StatusPage({
         icon_name: 'face-uncertain-symbolic',
-        title: 'No meals today',
-        description: 'Guess you have to starve now.'
+        title: _('No meals today'),
+        description: _('Guess you have to starve now.')
       });
       return statusPage;
     }
@@ -158,8 +175,8 @@ export const MensaShWindow = GObject.registerClass({
     if (filteredMeals.length === 0) {
       const statusPage = new Adw.StatusPage({
         icon_name: 'face-uncertain-symbolic',
-        title: 'No meals match your dietary preference',
-        description: 'Try adjusting your dietary preferences in settings.'
+        title: _('No meals match your dietary preference'),
+        description: _('Try adjusting your dietary preferences in settings.')
       });
       return statusPage;
     }

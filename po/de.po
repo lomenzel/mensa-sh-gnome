@@ -1,0 +1,144 @@
+# German translations for Mensa App
+# Copyright (C) 2026 Sören
+# This file is distributed under the same license as the mensa-sh package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mensa-sh\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-14T12:00+0000\n"
+"PO-Revision-Date: 2026-02-14T12:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: German <de@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+
+#: src/preferences.js:12
+msgid "Preferences"
+msgstr "Einstellungen"
+
+#: src/preferences.js:21 src/preferences.js:25
+msgid "Locations"
+msgstr "Standorte"
+
+#: src/preferences.js:30 src/preferences.js:32
+msgid "Display"
+msgstr "Anzeige"
+
+#: src/preferences.js:38 src/preferences.js:40
+msgid "Allergens"
+msgstr "Allergene"
+
+#: src/preferences.js:86
+msgid "Dietary Preferences"
+msgstr "Ernährungspräferenzen"
+
+#: src/preferences.js:87
+msgid "Filter meals by dietary preference"
+msgstr "Gerichte nach Ernährungspräferenzen filtern"
+
+#: src/preferences.js:91 src/preferences.js:115 src/preferences.js:118
+msgid "All meals"
+msgstr "Alle Gerichte"
+
+#: src/preferences.js:92 src/preferences.js:116
+msgid "Vegetarian only"
+msgstr "Nur Vegetarisch"
+
+#: src/preferences.js:93 src/preferences.js:117
+msgid "Vegan only"
+msgstr "Nur Vegan"
+
+#: src/preferences.js:153
+msgid "Language"
+msgstr "Sprache"
+
+#: src/preferences.js:154
+msgid "App language"
+msgstr "App-Sprache"
+
+#: src/preferences.js:158 src/preferences.js:160
+msgid "Follow system"
+msgstr "System folgen"
+
+#: src/preferences.js:159
+msgid "English"
+msgstr "Englisch"
+
+#: src/preferences.js:160
+msgid "German"
+msgstr "Deutsch"
+
+#: src/preferences.js:196
+msgid "Price Display"
+msgstr "Preisanzeige"
+
+#: src/preferences.js:197
+msgid "Show prices for"
+msgstr "Preise anzeigen für"
+
+#: src/preferences.js:201 src/preferences.js:204
+msgid "Students"
+msgstr "Studierende"
+
+#: src/preferences.js:202 src/preferences.js:205
+msgid "Employees"
+msgstr "Mitarbeitende"
+
+#: src/preferences.js:203 src/preferences.js:206
+msgid "Guests"
+msgstr "Externe"
+
+#: src/preferences.js:235
+msgid "Allergen Warnings"
+msgstr "Allergen-Warnungen"
+
+#: src/preferences.js:236
+msgid "Select allergens to highlight"
+msgstr "Allergene auswählen für Hervorhebung"
+
+#: src/window.js:6
+msgid "Mensa"
+msgstr "Mensa"
+
+#: src/window.js:29
+msgid "Refresh"
+msgstr "Aktualisierten"
+
+#: src/window.js:43
+msgid "Main Menu"
+msgstr "Hauptmenü"
+
+#: src/window.js:53
+msgid "_Preferences"
+msgstr "_Einstellungen"
+
+#: src/window.js:56
+msgid "_About Mensa"
+msgstr "_Über Mensa"
+
+#: src/window.js:92 src/window.js:176
+msgid "No meals today"
+msgstr "Heute keine Gerichte"
+
+#: src/window.js:93
+msgid "No meals match your dietary preference"
+msgstr "Keine Gerichte entsprechen Ihrer Ernährungspräferenz"
+
+#: src/window.js:94
+msgid "Guess you have to starve now."
+msgstr "Müssen wohl hungern."
+
+#: src/window.js:95
+msgid "Try adjusting your dietary preferences in settings."
+msgstr "Versuchen Sie Ihre Ernährungspräferenzen in den Einstellungen anzupassen."
+
+#: src/window.js:93
+msgid "No location selected"
+msgstr "Kein Standort ausgewählt"
+
+#: src/preferences.js:153
+msgid "Restart app to apply language changes"
+msgstr "App neu starten, um die Sprachänderungen zu übernehmen"

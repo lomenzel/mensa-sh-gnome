@@ -4,5 +4,6 @@ data/digital.fischers.mensash.desktop.in
 data/digital.fischers.mensash.metainfo.xml.in
 data/digital.fischers.mensash.gschema.xml
 src/main.js
+src/preferences.js
 src/window.js
 src/window.ui

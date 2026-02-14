@@ -1,0 +1,140 @@
+# Mensa App
+# Copyright (C) 2026 Sören
+# This file is distributed under the same license as the mensa-sh package.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: n\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-14T12:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/preferences.js:12
+msgid "Preferences"
+msgstr ""
+
+#: src/preferences.js:21 src/preferences.js:25
+msgid "Locations"
+msgstr ""
+
+#: src/preferences.js:30 src/preferences.js:32
+msgid "Display"
+msgstr ""
+
+#: src/preferences.js:38 src/preferences.js:40
+msgid "Allergens"
+msgstr ""
+
+#: src/preferences.js:86
+msgid "Dietary Preferences"
+msgstr ""
+
+#: src/preferences.js:87
+msgid "Filter meals by dietary preference"
+msgstr ""
+
+#: src/preferences.js:91 src/preferences.js:115 src/preferences.js:118
+msgid "All meals"
+msgstr ""
+
+#: src/preferences.js:92 src/preferences.js:116
+msgid "Vegetarian only"
+msgstr ""
+
+#: src/preferences.js:93 src/preferences.js:117
+msgid "Vegan only"
+msgstr ""
+
+#: src/preferences.js:153
+msgid "Language"
+msgstr ""
+
+#: src/preferences.js:154
+msgid "App language"
+msgstr ""
+
+#: src/preferences.js:158 src/preferences.js:160
+msgid "Follow system"
+msgstr ""
+
+#: src/preferences.js:159
+msgid "English"
+msgstr ""
+
+#: src/preferences.js:160
+msgid "German"
+msgstr ""
+
+#: src/preferences.js:196
+msgid "Price Display"
+msgstr ""
+
+#: src/preferences.js:197
+msgid "Show prices for"
+msgstr ""
+
+#: src/preferences.js:201 src/preferences.js:204
+msgid "Students"
+msgstr ""
+
+#: src/preferences.js:202 src/preferences.js:205
+msgid "Employees"
+msgstr ""
+
+#: src/preferences.js:203 src/preferences.js:206
+msgid "Guests"
+msgstr ""
+
+#: src/preferences.js:235
+msgid "Allergen Warnings"
+msgstr ""
+
+#: src/preferences.js:236
+msgid "Select allergens to highlight"
+msgstr ""
+
+#: src/window.js:6
+msgid "Mensa"
+msgstr ""
+
+#: src/window.js:29
+msgid "Refresh"
+msgstr ""
+
+#: src/window.js:43
+msgid "Main Menu"
+msgstr ""
+
+#: src/window.js:53
+msgid "_Preferences"
+msgstr ""
+
+#: src/window.js:56
+msgid "_About Mensa"
+msgstr ""
+
+#: src/window.js:92 src/window.js:176
+msgid "No meals today"
+msgstr ""
+
+#: src/window.js:93
+msgid "No meals match your dietary preference"
+msgstr ""
+
+#: src/window.js:94
+msgid "Guess you have to starve now."
+msgstr ""
+
+#: src/window.js:95
+msgid "Try adjusting your dietary preferences in settings."
+msgstr ""
+
+#: src/window.js:93
+msgid "No location selected"
+msgstr ""

@@ -22,8 +22,33 @@ import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
 import Gtk from 'gi://Gtk?version=4.0';
 import Adw from 'gi://Adw?version=1';
+import GLib from 'gi://GLib';
 
 import { MensaShWindow } from './window.js';
+
+// Read language preference from config before initializing gettext
+function getAppLanguage() {
+    try {
+        const configPath = GLib.get_user_config_dir() + "/mensa-app/config.json";
+        if (GLib.file_test(configPath, GLib.FileTest.EXISTS)) {
+            const [success, content] = GLib.file_get_contents(configPath);
+            if (success) {
+                const decoder = new TextDecoder('utf-8');
+                const config = JSON.parse(decoder.decode(content));
+                return config.languagePreference || "system";
+            }
+        }
+    } catch (e) {
+        // Config doesn't exist yet, use system default
+    }
+    return "system";
+}
+
+// Set language before initializing gettext
+const appLang = getAppLanguage();
+if (appLang !== "system") {
+    GLib.setenv("LANGUAGE", appLang, true);
+}
 
 pkg.initGettext();
 pkg.initFormat();
