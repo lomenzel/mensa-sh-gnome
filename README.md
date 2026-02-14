@@ -43,7 +43,7 @@ This desktop app is part of a family of mensa applications:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/mensa-sh.git
+git clone https://github.com/Importantus/mensa-sh-gnome.git
 cd mensa-sh
 
 # Configure the build
