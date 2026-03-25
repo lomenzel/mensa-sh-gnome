@@ -75,7 +75,7 @@ export const MensaShApplication = GObject.registerClass(
           application_name: 'mensa-sh',
           application_icon: 'digital.fischers.mensash',
           developer_name: 'Sören',
-          version: '0.1.0',
+          version: pkg.version,
           developers: [
             'Sören'
           ],
