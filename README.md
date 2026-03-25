@@ -29,9 +29,43 @@ This desktop app is part of a family of mensa applications:
 - **[speiseplan-tray](https://github.com/Importantus/speiseplan-tray)** – System tray application
 - **[speiseplan-cli](https://github.com/Draculente/speiseplan-cli)** – Command-line interface
 
-## Building from Source
+## Installation using Flatpak
 
-### Dependencies
+> Requires Flatpak to be installed and only works on x86_64 Linux machines
+
+The easiest way to install Mensa-SH is via Flatpak. For every tagged release, a pre-built `.flatpak` bundle is available on the [Releases page](https://github.com/Importantus/mensa-sh-gnome/releases).
+
+1. Download the `mensa-sh.flatpak` file from the latest release.
+2. Install it using your software center (like GNOME Software)
+
+## Running and Building
+
+### Using Nix
+
+If you have the [Nix package manager](https://nixos.org/) installed with flakes enabled, you don't need to manually install any dependencies. 
+
+You can run the app directly from the repository:
+```bash
+nix run github:Importantus/mensa-sh-gnome
+```
+
+Or, to build it locally:
+
+```bash
+git clone https://github.com/Importantus/mensa-sh-gnome
+cd mensa-sh-gnome
+nix build
+```
+
+> **Tip for Developers:** You can run `nix develop` in the cloned repository to instantly drop into a development shell with Meson, GTK4, libadwaita, and all other required build tools pre-configured!
+
+This repository also exposes a [Nixpkgs overlay](https://nixos.wiki/wiki/Overlays). You can use it in your own Nix flake or NixOS configuration for setups requiring advanced features like cross-compilation.
+
+### Manual Build
+
+If you are not using Nix, you can build the project manually using Meson.
+
+#### Dependencies
 
 - GNOME 46+
 - Meson 1.0.0+
@@ -39,7 +73,7 @@ This desktop app is part of a family of mensa applications:
 - libadwaita
 - gettext
 
-### Build Instructions
+#### Build Instructions
 
 ```bash
 # Clone the repository
@@ -56,7 +90,7 @@ meson compile -C builddir
 meson install -C builddir
 ```
 
-### Development Build
+#### Development Build
 
 For development, you can run the application directly from the build directory:
 
